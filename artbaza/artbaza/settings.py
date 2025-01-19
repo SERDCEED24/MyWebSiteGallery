@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crud'
 ]
 
 MIDDLEWARE = [
@@ -78,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'artdb',
         'USER': 'root',
-        'PASSWORD': '/0YpaXhoSMZXq8TB',
+        'PASSWORD': 'W.m[RCjHpSI1z7wB',
         'HOST': 'localhost',
         'PORT': '3307',
     }
