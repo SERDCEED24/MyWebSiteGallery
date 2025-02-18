@@ -47,3 +47,30 @@ class WorkStatus(models.Model):
 
     def __str__(self):
         return f'{self.status_name}'
+
+class Artwork(models.Model):
+    image = models.ImageField()
+    title = models.CharField(max_length=50)
+    creation_year = models.IntegerField(validators=[
+        MinValueValidator(0),
+        MaxValueValidator(datetime.datetime.now().year)
+    ])
+    length = models.FloatField(blank=False, validators=[
+        MinValueValidator(0)])
+    width = models.FloatField(blank=False, validators=[
+        MinValueValidator(0)])
+    height = models.FloatField(blank=False, validators=[
+        MinValueValidator(0)])
+    genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
+    material = models.ForeignKey(Material, on_delete=models.CASCADE)
+    technique = models.ForeignKey(Technique, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    status = models.ForeignKey(WorkStatus, on_delete=models.CASCADE)
+    purchase_year = models.IntegerField(validators=[
+        MinValueValidator(0),
+        MaxValueValidator(datetime.datetime.now().year)
+    ])
+    purchase_price = models.FloatField(validators=[MinValueValidator(0)])
+    current_price = models.FloatField(validators=[MinValueValidator(0)])
+    price_without_frame = models.FloatField(validators=[MinValueValidator(0)])
+    price_with_frame = models.FloatField(validators=[MinValueValidator(0)])
