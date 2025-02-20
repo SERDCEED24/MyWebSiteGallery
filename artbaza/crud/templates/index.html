@@ -77,7 +77,7 @@
                 </td>
                 {% endfor %}
                 <td>
-                    <a href="{% url 'edit_form' model_name record|get_attr:'id' %}" class='btn btn-warning btn-sm'>Редактировать</a>
+                    <a href="{% url 'edit_form' model_name record|get_attr:'id' %}" class='btn btn-warning btn-sm mb-2'>Редактировать</a>
                     <form method="post" action="{% url 'delete_record' model_name record|get_attr:'id' %}"
                           style="display:inline;">
                         {% csrf_token %}
