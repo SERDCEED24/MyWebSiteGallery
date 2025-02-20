@@ -18,7 +18,7 @@ class Author(models.Model):
     ])
 
     def __str__(self):
-        return f'{self.last_name} {self.first_name} {self.middle_name} {self.description} {self.year_of_birth} {self.year_of_death}'
+        return f'{self.last_name} {self.first_name} {self.middle_name}'
 
 
 class Genre(models.Model):

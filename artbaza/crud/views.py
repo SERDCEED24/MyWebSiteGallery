@@ -45,7 +45,7 @@ def form(request, model_name, pk=None):
     record = get_object_or_404(model, id=pk) if pk else None
 
     if request.method == "POST":
-        model_form = form_class(request.POST, instance=record)
+        model_form = form_class(request.POST, request.FILES, instance=record)
         if model_form.is_valid():
             model_form.save()
             return redirect(f'/crud/{model_name}/')

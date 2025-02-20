@@ -9,7 +9,7 @@
 <body>
 <div class="container mt-5">
     <h1 class="text-center">Ввод/редактирование информации об {{ model_header }}</h1>
-    <form method="post" class="mt-4">
+    <form method="post" enctype="multipart/form-data" class="mt-4">
         {% csrf_token %}
         {% load crispy_forms_tags %}
         {{ form|crispy }}
