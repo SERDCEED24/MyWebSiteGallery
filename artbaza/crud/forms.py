@@ -5,8 +5,9 @@ from .models import *
 class AuthorForm(forms.ModelForm):
     class Meta:
         model = Author
-        fields = ['last_name', 'first_name', 'middle_name', 'description', 'year_of_birth', 'year_of_death']
+        fields = ['image', 'last_name', 'first_name', 'middle_name', 'description', 'year_of_birth', 'year_of_death']
         labels = {
+            'image': 'Изображение',
             'last_name': 'Фамилия',
             'first_name': 'Имя',
             'middle_name': 'Отчество',

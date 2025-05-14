@@ -73,10 +73,6 @@
                     <td>{{ artwork.purchase_year }}</td>
                 </tr>
                 <tr>
-                    <th>Цена покупки</th>
-                    <td>{{ artwork.purchase_price }}</td>
-                </tr>
-                <tr>
                     <th>Текущая цена</th>
                     <td>{{ artwork.current_price }}</td>
                 </tr>
@@ -90,45 +86,12 @@
                 </tr>
                 </tbody>
             </table>
-            <a href="{% url 'artwork_index' %}" class="btn btn-primary">
+            <a href="{% url 'base_index' %}" class="btn btn-primary">
                 <i class="bi bi-arrow-left"></i>
             </a>
-            <a href="{% url 'edit_form' 'Artwork' artwork.id %}" class="btn btn-warning">
-                <i class="bi bi-pencil"></i>
-            </a>
-            <form id="delete-form" method="POST" action="{% url 'delete_record' 'Artwork' artwork.id %}"
-                  style="display: none;">
-                {% csrf_token %}
-            </form>
-            <button class="btn btn-danger" onclick="confirmDelete()">
-                <i class="bi bi-trash"></i>
-            </button>
         </div>
     </div>
 </div>
-<script>
-    function confirmDelete() {
-        if (confirm("Вы уверены, что хотите удалить запись?")) {
-            fetch("{% url 'delete_record' 'Artwork' artwork.id %}", {
-                method: "POST",
-                headers: {
-                    "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    window.location.href = "{% url 'artwork_index' %}";  // Редирект на список
-                } else {
-                    alert("Ошибка удаления записи.");
-                }
-            })
-            .catch(error => {
-                alert("Произошла ошибка при удалении.");
-            });
-        }
-    }
-</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -15,7 +15,7 @@ from django.http import JsonResponse
 '''
 def index(request):
     authors = Author.objects.all()
-    return render(request, 'index.html', {'authors': authors})
+    return render(request, 'base_index.html', {'authors': authors})
 '''
 
 
@@ -145,7 +145,7 @@ def form(request, model_name, pk=None):
 @login_required
 def artwork_detailed(request, pk):
     artwork = Artwork.objects.get(pk=pk)
-    return render(request, 'artwork_detailed.html', {'artwork': artwork})
+    return render(request, 'base_artwork_detailed.html', {'artwork': artwork})
 
 def register(request):
     if request.method == 'POST':

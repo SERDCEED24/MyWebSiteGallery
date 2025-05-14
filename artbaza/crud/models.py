@@ -4,7 +4,7 @@ import datetime
 
 
 class Author(models.Model):
-    #image = models.ImageField()
+    image = models.ImageField(upload_to='authors/', blank=True, null=True)
     last_name = models.CharField(max_length=20, blank=False)
     first_name = models.CharField(max_length=20, blank=False)
     middle_name = models.CharField(max_length=20, blank=False)

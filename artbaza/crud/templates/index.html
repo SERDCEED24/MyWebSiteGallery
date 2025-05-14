@@ -44,6 +44,7 @@
                     <a class="nav-link" href="/crud/tree/">Древовидное представление</a>
                 </li>
             </ul>
+            <a class="btn btn-outline-primary me-3" href="{% url 'base_index' %}">На главную</a>
             <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-outline-danger">Выйти из аккаунта</button>
@@ -105,8 +106,11 @@
                 {% for field in fields %}
                 <td>
                     {% if field == "image" %}
-                    <img src="{{ record.image.url }}" alt="Artwork Image"
-                         style="max-width: 100px; height: auto;">
+                    {% if record.image %}
+                        <img src="{{ record.image.url }}" alt="Artwork Image" style="max-width: 100px; height: auto;">
+                    {% else %}
+                        <p>Изображение отсутствует</p>
+                    {% endif %}
                     {% else %}
                     {{ record|get_attr:field|default:"Нет" }}
                     {% endif %}
