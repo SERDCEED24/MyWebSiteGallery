@@ -4,6 +4,7 @@ import datetime
 
 
 class Author(models.Model):
+    #image = models.ImageField()
     last_name = models.CharField(max_length=20, blank=False)
     first_name = models.CharField(max_length=20, blank=False)
     middle_name = models.CharField(max_length=20, blank=False)
@@ -22,28 +23,28 @@ class Author(models.Model):
 
 
 class Genre(models.Model):
-    genre_name = models.CharField(max_length=20, blank=False)
+    genre_name = models.CharField(max_length=50, blank=False)
 
     def __str__(self):
         return f'{self.genre_name}'
 
 
 class Material(models.Model):
-    material_name = models.CharField(max_length=20, blank=False)
+    material_name = models.CharField(max_length=50, blank=False)
 
     def __str__(self):
         return f'{self.material_name}'
 
 
 class Technique(models.Model):
-    technique_name = models.CharField(max_length=20, blank=False)
+    technique_name = models.CharField(max_length=50, blank=False)
 
     def __str__(self):
         return f'{self.technique_name}'
 
 
 class WorkStatus(models.Model):
-    status_name = models.CharField(max_length=20, blank=False)
+    status_name = models.CharField(max_length=50, blank=False)
 
     def __str__(self):
         return f'{self.status_name}'

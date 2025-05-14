@@ -75,12 +75,10 @@ WSGI_APPLICATION = 'artbaza.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'artdb',
-        'USER': 'root',
-        'PASSWORD': 'W.m[RCjHpSI1z7wB',
-        'HOST': 'localhost',
-        'PORT': '3307',
+        "ENGINE": "django.db.backends.postgresql",
+        "OPTIONS": {
+            "service": "django_db2",
+        },
     }
 }
 
@@ -105,7 +103,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
@@ -117,6 +115,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -126,6 +125,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
-MEDIA_ROOT = r"C:\Users\joreh\OneDrive\Desktop\django_media"
+MEDIA_ROOT = r"C:\Users\George\Desktop\курсовая\картинки"
 
 MEDIA_URL = '/media/'
+
+LOGIN_REDIRECT_URL = '/crud/Artwork/'
+
+LOGIN_URL = '/crud/accounts/login/'
+
+LOGOUT_REDIRECT_URL = '/crud/accounts/login/'

@@ -5,7 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/artbaza" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.13 (MyWebSiteGallery)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.12 (MyWebSiteGallery)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

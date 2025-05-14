@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Иерархия моделей</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        .tree-toggle { cursor: pointer; font-weight: bold; }
+        .tree-node { margin-left: 20px; display: none; }
+        .context-menu { display: none; position: absolute; z-index: 1000; background: #fff; border: 1px solid #ccc; padding: 5px; }
+        .context-menu ul { list-style: none; padding: 0; margin: 0; }
+        .context-menu ul li { padding: 5px; cursor: pointer; }
+        .context-menu ul li:hover { background: #f0f0f0; }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light bg-gradient border-bottom">
+    <div class="container-fluid">
+        <a class="navbar-brand">Таблицы</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page"
+                       href="/crud/Author/">Авторы</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/crud/Genre/">Жанры</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/crud/Material/">Материалы</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/crud/Technique/">Техники
+                        исполнения</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/crud/WorkStatus/">Статусы
+                        работ</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/crud/Artwork/">Художественные
+                        произведения</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/crud/tree/">Древовидное представление</a>
+                </li>
+            </ul>
+            <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-danger">Выйти из аккаунта</button>
+            </form>
+        </div>
+    </div>
+</nav>
+    <div class="container mt-4">
+        <h2>Иерархия моделей</h2>
+        <ul class="list-unstyled">
+            <li><span class="tree-toggle">📚 Авторы</span>
+                <ul class="tree-node list-unstyled">
+                    {% for author in authors %}
+                        <li class="tree-item" data-type="Author" data-id="{{ author.id }}">{{ author }}
+                            <ul>
+                                {% for artwork in author.artwork_set.all %}
+                                    <li class="tree-item" data-type="Artwork" data-id="{{ artwork.id }}">🖼 {{ artwork.title }}</li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li><span class="tree-toggle">🎨 Жанры</span>
+                <ul class="tree-node list-unstyled">
+                    {% for genre in genres %}
+                        <li class="tree-item" data-type="Genre" data-id="{{ genre.id }}">{{ genre.genre_name }}
+                            <ul>
+                                {% for artwork in genre.artwork_set.all %}
+                                    <li class="tree-item" data-type="Artwork" data-id="{{ artwork.id }}">🖼 {{ artwork.title }}</li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li><span class="tree-toggle">📜 Материалы</span>
+                <ul class="tree-node list-unstyled">
+                    {% for material in materials %}
+                        <li class="tree-item" data-type="Material" data-id="{{ material.id }}">{{ material.material_name }}
+                        <ul>
+                                {% for artwork in material.artwork_set.all %}
+                                    <li class="tree-item" data-type="Artwork" data-id="{{ artwork.id }}">🖼 {{ artwork.title }}</li>
+                                {% endfor %}
+                            </ul></li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li><span class="tree-toggle">🖌 Техники</span>
+                <ul class="tree-node list-unstyled">
+                    {% for technique in techniques %}
+                        <li class="tree-item" data-type="Technique" data-id="{{ technique.id }}">{{ technique.technique_name }}
+                            <ul>
+                                {% for artwork in technique.artwork_set.all %}
+                                    <li class="tree-item" data-type="Artwork" data-id="{{ artwork.id }}">🖼 {{ artwork.title }}</li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li><span class="tree-toggle">🔍 Статусы картин</span>
+                <ul class="tree-node list-unstyled">
+                    {% for status in statuses %}
+                        <li class="tree-item" data-type="WorkStatus" data-id="{{ status.id }}">{{ status.status_name }}
+                            <ul>
+                                {% for artwork in status.artwork_set.all %}
+                                    <li class="tree-item" data-type="Artwork" data-id="{{ artwork.id }}">🖼 {{ artwork.title }}</li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="context-menu" id="context-menu">
+        <ul>
+            <li onclick="editItem()">✏️ Редактировать</li>
+            <li onclick="deleteItem()">🗑 Удалить</li>
+            <li onclick="addItem()">➕ Добавить</li>
+        </ul>
+    </div>
+
+    <script>
+        document.querySelectorAll('.tree-toggle').forEach(item => {
+            item.addEventListener('click', () => {
+                let node = item.nextElementSibling;
+                node.style.display = node.style.display === 'none' ? 'block' : 'none';
+            });
+        });
+
+        document.addEventListener("contextmenu", function(event) {
+            let target = event.target.closest('.tree-item');
+            if (target) {
+                event.preventDefault();
+                let menu = document.getElementById("context-menu");
+                menu.style.top = `${event.pageY}px`;
+                menu.style.left = `${event.pageX}px`;
+                menu.style.display = "block";
+                menu.dataset.type = target.dataset.type;
+                menu.dataset.id = target.dataset.id;
+            }
+        });
+
+        document.addEventListener("click", () => {
+            document.getElementById("context-menu").style.display = "none";
+            window.location.href = relativePath;
+        });
+
+        function editItem() {
+            let menu = document.getElementById("context-menu");
+            window.location.href = `/crud/form/${menu.dataset.type}/${menu.dataset.id}/`;
+        }
+
+        function deleteItem() {
+            if (!confirm("Вы уверены, что хотите удалить запись?")) return;
+            let menu = document.getElementById("context-menu");
+            let target = document.querySelector(`[data-id="${menu.dataset.id}"][data-type="${menu.dataset.type}"]`);
+
+            fetch(`/crud/delete_treenode/${menu.dataset.type}/${menu.dataset.id}/`, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}",
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    target.remove(); // Удаляем элемент на странице
+                } else {
+                    alert("Ошибка удаления: " + data.error);
+                }
+            })
+            .catch(error => console.error("Ошибка:", error));
+                }
+
+        function addItem() {
+            let menu = document.getElementById("context-menu");
+            window.location.href = `/crud/form/${menu.dataset.type}/`;
+        }
+    </script>
+</body>
+</html>

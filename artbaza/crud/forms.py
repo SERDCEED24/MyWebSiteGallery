@@ -51,35 +51,40 @@ class WorkStatusForm(forms.ModelForm):
             'status_name': 'Название статуса работы',
         }
 
+
 class ArtworkForm(forms.ModelForm):
     class Meta:
         model = Artwork
-        fields = ['image', 'title', 'creation_year', 'length', 'width', 'height', 'genre', 'material', 'technique', 'author', 'status', 'purchase_year', 'purchase_price', 'current_price', 'price_without_frame', 'price_with_frame']
+        fields = ['image', 'title', 'creation_year', 'length', 'width', 'height', 'genre', 'material', 'technique',
+                  'author', 'status', 'purchase_year', 'purchase_price', 'current_price', 'price_without_frame',
+                  'price_with_frame']
         labels = {
-            'image' : 'Изображение',
-            'title' : 'Название',
-        'creation_year' : 'Год создания',
-        'length' : 'Длина',
-        'width' : 'Ширина',
-        'height' :'Высота',
-        'genre' : 'Жанр',
-        'material' : 'Материал',
-        'technique' : 'Техника исполнения',
-        'author' : 'Автор',
-        'status' : 'Статус',
-        'purchase_year' : 'Год покупки',
-        'purchase_price' : 'Цена покупки',
-        'current_price' : 'Текущая цена',
-        'price_without_frame' : 'Цена без багета',
-        'price_with_frame' : 'Цена с багетом'
+            'image': 'Изображение',
+            'title': 'Название',
+            'creation_year': 'Год создания',
+            'length': 'Длина',
+            'width': 'Ширина',
+            'height': 'Высота',
+            'genre': 'Жанр',
+            'material': 'Материал',
+            'technique': 'Техника исполнения',
+            'author': 'Автор',
+            'status': 'Статус',
+            'purchase_year': 'Год покупки',
+            'purchase_price': 'Цена покупки',
+            'current_price': 'Текущая цена',
+            'price_without_frame': 'Цена без багета',
+            'price_with_frame': 'Цена с багетом'
         }
+
+
 MODEL_TITLES_HEADERS = {
     'Author': ['автора', 'авторе'],
     'Genre': ['жанра', 'жанре'],
     'Material': ['материала', 'материале'],
     'Technique': ['техники исполнения', 'технике исполнения'],
     'WorkStatus': ['статуса работы', 'статусе работы'],
-    'Artwork' : ['художественного произведения', 'художественном произведении']
+    'Artwork': ['художественного произведения', 'художественном произведении']
 }
 MODEL_FORMS = {
     'Author': AuthorForm,
@@ -87,5 +92,5 @@ MODEL_FORMS = {
     'Material': MaterialForm,
     'Technique': TechniqueForm,
     'WorkStatus': WorkStatusForm,
-    'Artwork' : ArtworkForm
+    'Artwork': ArtworkForm
 }
