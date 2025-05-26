@@ -34,7 +34,7 @@
                 </tr>
                 <tr>
                     <th>Год создания</th>
-                    <td>{{ artwork.creation_year }}</td>
+                    <td>{%if artwork.creation_year %}{{ artwork.creation_year }}{%else%}Не установлен{%endif%}</td>
                 </tr>
                 <tr>
                     <th>Длина (см)</th>
@@ -78,15 +78,15 @@
                 </tr>
                 <tr>
                     <th>Текущая цена</th>
-                    <td>{{ artwork.current_price }}</td>
+                    <td>{%if artwork.current_price %}{{ artwork.current_price }}{%else%}Не установлена{%endif%}</td>
                 </tr>
                 <tr>
                     <th>Цена без багета</th>
-                    <td>{{ artwork.price_without_frame }}</td>
+                    <td>{%if artwork.price_without_frame %}{{ artwork.price_without_frame }}{%else%}Не установлена{%endif%}</td>
                 </tr>
                 <tr>
                     <th>Цена с багетом</th>
-                    <td>{{ artwork.price_with_frame }}</td>
+                    <td>{%if artwork.price_with_frame %}{{ artwork.price_with_frame }}{%else%}Не установлена{%endif%}</td>
                 </tr>
                 </tbody>
             </table>

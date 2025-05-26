@@ -52,7 +52,7 @@ class WorkStatus(models.Model):
 class Artwork(models.Model):
     image = models.ImageField()
     title = models.CharField(max_length=50)
-    creation_year = models.IntegerField(validators=[
+    creation_year = models.IntegerField(blank=True, null=True, validators=[
         MinValueValidator(0),
         MaxValueValidator(datetime.datetime.now().year)
     ])
@@ -72,6 +72,6 @@ class Artwork(models.Model):
         MaxValueValidator(datetime.datetime.now().year)
     ])
     purchase_price = models.FloatField(validators=[MinValueValidator(0)])
-    current_price = models.FloatField(validators=[MinValueValidator(0)])
-    price_without_frame = models.FloatField(validators=[MinValueValidator(0)])
-    price_with_frame = models.FloatField(validators=[MinValueValidator(0)])
+    current_price = models.FloatField(validators=[MinValueValidator(0)], blank=True, null=True)
+    price_without_frame = models.FloatField(validators=[MinValueValidator(0)], blank=True, null=True)
+    price_with_frame = models.FloatField(validators=[MinValueValidator(0)], blank=True, null=True)

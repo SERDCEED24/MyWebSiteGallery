@@ -5,6 +5,24 @@
     <title>АртБаза</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card-img-top {
+            height: 300px;
+            object-fit: contain;
+        }
+        .card {
+            max-width: 100%;
+        }
+        .card-body {
+            padding: 1rem;
+        }
+        .card-title {
+            font-size: 1.1rem;
+        }
+        .card-text {
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
@@ -12,9 +30,6 @@
         <a class="navbar-brand">АртБаза</a>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/crud/tree/">Древовидное представление</a>
-                </li>
             </ul>
             <a href='/crud/Artwork/' class="btn btn-outline-primary">В админ-панель</a>
         </div>
@@ -27,22 +42,33 @@
         <button class="btn btn-outline-success" type="submit">Найти</button>
     </form>
     <div class="row">
-    <div class="col-md-3 filter-sidebar">
-        <form method="get">
+        <div class="col-md-3 filter-sidebar">
+            <form method="get">
                 <h5>Фильтры</h5>
-                <div class="mb-3">
+                <div class="mb-1">
                     <label>Автор</label>
                     <select name="author" class="form-select">
                         <option value="">Все</option>
                         {% for author in authors %}
                             <option value="{{ author.id }}" {% if get.author == author.id|stringformat:"s" %}selected{% endif %}>
-                                {{ author.last_name }} {{ author.first_name }}
+                                {{ author.last_name }} {{ author.first_name }} {{ author.middle_name }}
                             </option>
                         {% endfor %}
                     </select>
                 </div>
-                <div class="mb-3">
-                    <label>Техника</label>
+                <div class="mb-1">
+                    <label>Материал</label>
+                    <select name="material" class="form-select">
+                        <option value="">Все</option>
+                        {% for material in materials %}
+                            <option value="{{ material.id }}" {% if get.material == material.id|stringformat:"s" %}selected{% endif %}>
+                                {{ material.material_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-1">
+                    <label>Техника исполнения</label>
                     <select name="technique" class="form-select">
                         <option value="">Все</option>
                         {% for tech in techniques %}
@@ -52,7 +78,7 @@
                         {% endfor %}
                     </select>
                 </div>
-                <div class="mb-3">
+                <div class="mb-1">
                     <label>Жанр</label>
                     <select name="genre" class="form-select">
                         <option value="">Все</option>
@@ -63,84 +89,116 @@
                         {% endfor %}
                     </select>
                 </div>
-                <div class="mb-3">
+                <div class="mb-1">
                     <label>Статус</label>
                     <select name="status" class="form-select">
                         <option value="">Все</option>
                         {% for status in statuses %}
-                            <option value="{{ status.0 }}" {% if get.status == status.0 %}selected{% endif %}>
-                                {{ status.1 }}
+                            <option value="{{ status.id }}" {% if get.status == status.id|stringformat:"s" %}selected{% endif %}>
+                                {{ status.status_name }}
                             </option>
                         {% endfor %}
                     </select>
                 </div>
-                <div class="mb-3">
+                <div class="mb-1">
                     <label>Ширина (от/до)</label>
                     <div class="d-flex gap-2">
                         <input type="number" name="min_width" class="form-control" placeholder="от" value="{{ get.min_width }}">
                         <input type="number" name="max_width" class="form-control" placeholder="до" value="{{ get.max_width }}">
                     </div>
                 </div>
-                <div class="mb-3">
+                <div class="mb-1">
                     <label>Высота (от/до)</label>
                     <div class="d-flex gap-2">
                         <input type="number" name="min_height" class="form-control" placeholder="от" value="{{ get.min_height }}">
                         <input type="number" name="max_height" class="form-control" placeholder="до" value="{{ get.max_height }}">
                     </div>
                 </div>
-                <div class="mb-3">
+                <div class="mb-1">
+                    <label>Длина (от/до)</label>
+                    <div class="d-flex gap-2">
+                        <input type="number" name="min_length" class="form-control" placeholder="от" value="{{ get.min_length }}">
+                        <input type="number" name="max_length" class="form-control" placeholder="до" value="{{ get.max_length }}">
+                    </div>
+                </div>
+                <div class="mb-1">
                     <label>Цена (от/до)</label>
                     <div class="d-flex gap-2">
                         <input type="number" name="min_price" class="form-control" placeholder="от" value="{{ get.min_price }}">
                         <input type="number" name="max_price" class="form-control" placeholder="до" value="{{ get.max_price }}">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Применить</button>
-            </form>
-            </div>
-        <div class="col-md-9">
-    <form method="get" class="row g-3 mb-4">
-        <div class="col-md-2">
-            <label class="form-label">Поле сортировки</label>
-            <select name="sort_field" class="form-select">
-                <option value="">Без сортировки</option>
-                <option {% if get.sort_field == 'Название' %}selected{% endif %}>Название</option>
-                <option {% if get.sort_field == 'Год создания' %}selected{% endif %}>Год создания</option>
-                <option {% if get.sort_field == 'Цена' %}selected{% endif %}>Цена</option>
-                <option {% if get.sort_field == 'Ширина' %}selected{% endif %}>Ширина</option>
-                <option {% if get.sort_field == 'Высота' %}selected{% endif %}>Высота</option>
-                <option {% if get.sort_field == 'Длина' %}selected{% endif %}>Длина</option>
-            </select>
-        </div>
-        <div class="col-md-2">
-            <label class="form-label">Направление</label>
-            <select name="sort_order" class="form-select">
-                <option {% if get.sort_order == 'По возрастанию' %}selected{% endif %}>По возрастанию</option>
-                <option {% if get.sort_order == 'По убыванию' %}selected{% endif %}>По убыванию</option>
-            </select>
-        </div>
-    </form>
-
-    <div class="row">
-        {% for artwork in page_obj %}
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <img src="{{ artwork.image.url }}" class="card-img-top" alt="Изображение">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ artwork.title }}</h5>
-                        <p class="card-text">
-                            Автор: {{ artwork.author.last_name }} {{ artwork.author.first_name }} {{ artwork.author.middle_name }}<br>
-                            Цена: {{ artwork.current_price }} ₽
-                        </p>
-                        <a href="{% url 'base_artwork_detailed' artwork.id %}" class="btn btn-outline-primary">Подробнее</a>
+                <div class="mb-2">
+                    <label>Год создания (от/до)</label>
+                    <div class="d-flex gap-2">
+                        <input type="number" name="min_creation_year" class="form-control" placeholder="от" value="{{ get.min_creation_year }}">
+                        <input type="number" name="max_creation_year" class="form-control" placeholder="до" value="{{ get.max_creation_year }}">
                     </div>
                 </div>
-            </div>
-        {% empty %}
-            <p>Ничего не найдено.</p>
-        {% endfor %}
+                <a href="{% url 'base_index' %}" class="btn btn-warning w-100 mb-2">Сбросить фильтры</a>
+                <button type="submit" class="btn btn-primary w-100">Применить</button>
+            </form>
         </div>
-    </div>
+        <div class="col-md-9">
+            <form method="get" class="row g-3 mb-4">
+                <div class="col-md-2">
+                    <label class="form-label">Сортировать по:</label>
+                    <select name="sort_field" class="form-select" onchange="this.form.submit()">
+                        <option value="">Без сортировки</option>
+                        <option value="Название" {% if get.sort_field == 'Название' %}selected{% endif %}>Название</option>
+                        <option value="Год создания" {% if get.sort_field == 'Год создания' %}selected{% endif %}>Год создания</option>
+                        <option value="Цена" {% if get.sort_field == 'Цена' %}selected{% endif %}>Цена</option>
+                        <option value="Цена без багета" {% if get.sort_field == 'Цена без рамы' %}selected{% endif %}>Цена без рамы</option>
+                        <option value="Цена с багетом" {% if get.sort_field == 'Цена с рамой' %}selected{% endif %}>Цена с рамой</option>
+                        <option value="Ширина" {% if get.sort_field == 'Ширина' %}selected{% endif %}>Ширина</option>
+                        <option value="Высота" {% if get.sort_field == 'Высота' %}selected{% endif %}>Высота</option>
+                        <option value="Длина" {% if get.sort_field == 'Длина' %}selected{% endif %}>Длина</option>
+                        <option value="Жанр" {% if get.sort_field == 'Жанр' %}selected{% endif %}>Жанр</option>
+                        <option value="Материал" {% if get.sort_field == 'Материал' %}selected{% endif %}>Материал</option>
+                        <option value="Техника" {% if get.sort_field == 'Техника' %}selected{% endif %}>Техника</option>
+                        <option value="Статус" {% if get.sort_field == 'Статус' %}selected{% endif %}>Статус</option>
+                        <option value="Автор" {% if get.sort_field == 'Автор' %}selected{% endif %}>Автор</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Порядок:</label>
+                    <select name="sort_order" class="form-select" onchange="this.form.submit()">
+                        <option value="По возрастанию" {% if get.sort_order == 'По возрастанию' %}selected{% endif %}>По возрастанию</option>
+                        <option value="По убыванию" {% if get.sort_order == 'По убыванию' %}selected{% endif %}>По убыванию</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">На странице:</label>
+                    <select name="per_page" class="form-select" onchange="this.form.submit()">
+                        <option value="3" {% if per_page == 3 %}selected{% endif %}>3</option>
+                        <option value="6" {% if per_page == 6 %}selected{% endif %}>6</option>
+                        <option value="12" {% if per_page == 12 %}selected{% endif %}>12</option>
+                        <option value="18" {% if per_page == 18 %}selected{% endif %}>18</option>
+                    </select>
+                </div>
+            </form>
+
+            <div class="row">
+                {% for artwork in page_obj %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <img src="{{ artwork.image.url }}" class="card-img-top" alt="Изображение">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ artwork.title }}</h5>
+                                <p class="card-text">
+                                    Автор: {{ artwork.author.last_name }} {{ artwork.author.first_name }} {{ artwork.author.middle_name }}<br>
+                                    Цена: {% if artwork.current_price != 0 and artwork.current_price %}{{ artwork.current_price }} ₽{% else %}Не установлена{% endif %}<br>
+                                    Статус: {{ artwork.status.status_name }}
+                                </p>
+                                <a href="{% url 'base_artwork_detailed' artwork.id %}" class="btn btn-outline-primary">Подробнее</a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>Ничего не найдено.</p>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 
     <nav>
