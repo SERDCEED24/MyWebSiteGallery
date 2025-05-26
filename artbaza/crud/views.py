@@ -1,12 +1,16 @@
+import os
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404, redirect, render
 from django.apps import apps
-from django.http import HttpResponseNotAllowed, HttpResponseBadRequest, HttpResponse
+from django.http import HttpResponseNotAllowed, HttpResponseBadRequest, HttpResponse, FileResponse
 import json
 from openpyxl import Workbook
 from openpyxl.drawing.image import Image as OpenpyxlImage
 from PIL import Image as PILImage
 from io import BytesIO
+
+from artbaza import settings
 from .models import Author, Genre, Material, Technique, WorkStatus
 from .forms import MODEL_FORMS, MODEL_TITLES_HEADERS
 from .constants import MODEL_TABLE_HEAD
@@ -322,3 +326,19 @@ def export_to_excel(request):
     )
     response['Content-Disposition'] = 'attachment; filename="artwork_export.xlsx"'
     return response
+
+
+@login_required
+def download_help_pdf(request):
+    # Путь к PDF-файлу в папке static
+    pdf_path = os.path.join(settings.STATIC_ROOT, 'help', 'help.pdf')
+
+    try:
+        # Открываем файл и возвращаем его как ответ
+        return FileResponse(
+            open(pdf_path, 'rb'),
+            as_attachment=True,
+            filename='help.pdf'
+        )
+    except FileNotFoundError:
+        return HttpResponse("Файл справки не найден", status=404)

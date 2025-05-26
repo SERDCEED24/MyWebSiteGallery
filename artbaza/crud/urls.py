@@ -18,11 +18,12 @@ urlpatterns = [
     path('form/<str:model_name>/', views.form, name='add_form'),
     path('accounts/login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('accounts/register/', views.register, name='register'),
+    #path('accounts/register/', views.register, name='register'),
     path('tree/', views.tree_view, name='tree'),
     path('delete_treenode/<str:model_name>/<int:pk>/', views.delete_treenode, name='delete_treenode'),
     path('delete_multiple/<str:model_name>/', views.delete_multiple, name="delete_multiple"),
-    path('crud/export/', views.export_to_excel, name='export_to_excel'),
+    path('export/', views.export_to_excel, name='export_to_excel'),
+    path('help/', views.download_help_pdf, name='download_help_pdf'),
 ]
 
 

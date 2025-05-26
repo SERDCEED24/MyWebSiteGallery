@@ -1,6 +1,11 @@
+import os
+
+from django.http import FileResponse, HttpResponse
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from django.db.models import Q
+
+from artbaza import settings
 from crud.models import Artwork, Genre, Material, Technique, WorkStatus, Author
 
 
@@ -136,3 +141,17 @@ def artwork_detailed(request, pk):
     }
     return render(request, 'base_artwork_detailed.html',
                   {'artwork': artwork, 'author_info': author_info, 'artwork_numbers': artwork_numbers})
+
+def download_help_user_pdf(request):
+    # Путь к PDF-файлу в папке static
+    pdf_path = os.path.join(settings.STATIC_ROOT, 'help', 'help_user.pdf')
+
+    try:
+        # Открываем файл и возвращаем его как ответ
+        return FileResponse(
+            open(pdf_path, 'rb'),
+            as_attachment=True,
+            filename='help_user.pdf'
+        )
+    except FileNotFoundError:
+        return HttpResponse("Файл справки не найден", status=404)
